@@ -3,7 +3,7 @@ package spider;
 import org.htmlparser.Node;
 import org.htmlparser.NodeFilter;
 import org.htmlparser.Parser;
-import org.htmlparser.filters.NodeClassFilter;
+import org.htmlparser.filters.*;
 import org.htmlparser.tags.LinkTag;
 import org.htmlparser.util.NodeList;
 import org.htmlparser.util.ParserException;
@@ -34,15 +34,75 @@ public class htmlParser {
                         LinkTag link = (LinkTag) NodesFA;
                         linkUrl = link.getLink();
                     }
-                    if(linkUrl.contains("www.cnhnb.com")){
+                    if(linkUrl.contains("www.cnhnb.com")&&(!name.isEmpty())){
                         links.add(linkUrl+name);
                     }
-
                 }
             }
         } catch (ParserException e) {
             e.printStackTrace();
         }
         return links;
+    }
+    public static Set<String> linksData(String typeUrl){
+        Set<String> links = new HashSet<>();
+        String linksData = "";
+        try{
+            Parser parser = Parser.createParser(typeUrl,ENCODE);
+            NodeFilter lifilter = new TagNameFilter("li");
+            NodeFilter hasfilter = new HasParentFilter(lifilter);
+            NodeFilter filtera = new NodeClassFilter(LinkTag.class);
+            NodeFilter towfilter = new AndFilter(hasfilter,filtera);
+            NodeList nodeList = parser.extractAllNodesThatMatch(towfilter);
+
+            if(nodeList!=null){
+                for(int i=0;i<nodeList.size();i++){
+                    Node nodes = (Node)nodeList.elementAt(i);
+                    if(nodes instanceof LinkTag){
+                        LinkTag link = (LinkTag)nodes;
+                        linksData = link.getLink();
+                    }
+                    if(linksData.contains("http://www.cnhnb.com/gongying/")){
+                        links.add(linksData);
+                    }
+                }
+            }
+
+        }catch (ParserException e){
+            e.printStackTrace();
+        }
+        return links;
+    }
+    public static String nextPage(String result){
+        Set<String> links = new HashSet<>();
+        String next = "";
+        try{
+            Parser parser = Parser.createParser(result,ENCODE);
+            NodeFilter nextfilter = new StringFilter("下一页");
+            //NodeFilter filtera = new NodeClassFilter(LinkTag.class);
+            //NodeFilter twofilter = new AndFilter(nextfilter,filtera);
+            NodeList node = parser.extractAllNodesThatMatch(nextfilter);
+
+            if(node!=null){
+                //以防万一 for一次吧
+                String a = " ";
+                for(int i=0;i<node.size();i++){
+                    Node nodeurl = (Node)node.elementAt(i);//下一页作为节点
+                    Node nodefather = nodeurl.getParent();//下一页的标签，也是超链接所在，调试能看到
+                    if(nodefather instanceof LinkTag){
+                        LinkTag link = (LinkTag)nodefather;
+                        a = link.getLink();
+                    }
+                    if(a.contains("http://www.cnhnb.com/p/")){
+                        next = a;
+                    }
+                }
+            }else{
+                System.out.println("没有下一页了！");
+            }
+        }catch(ParserException e){
+            e.printStackTrace();
+        }
+        return next;
     }
 }

@@ -26,6 +26,10 @@ public class runnable extends Thread{
         return linksRunnable.size();
     }
 
+    public Set<String> getLinks(){
+        return links;
+    }
+
     public void run(){
         Iterator<String> url = links.iterator();
         if(url.hasNext()){
@@ -37,7 +41,11 @@ public class runnable extends Thread{
             Iterator<String> htUrl = linksRunnable.iterator();
             while(htUrl.hasNext()){
                 links.add(htUrl.next());
+                //System.out.println(htUrl.next());
             }
         }
+        produceType p = new produceType();
+        p.setLinks(links);
+        p.readUrl();
     }
 }
