@@ -27,7 +27,11 @@ public class produceType {
     }
     public void readUrl(){
         Iterator<String> url = links.iterator();
-        while (url.hasNext()){
+//        while (url.hasNext()){
+//            readType(url.next());
+//            System.out.println(" ");
+//        }
+        if (url.hasNext()){
             readType(url.next());
             System.out.println(" ");
         }
@@ -45,15 +49,16 @@ public class produceType {
         }
         resultString = type.split(name);//分解url和类型名称
         //取第一组，为url
-        httpClient.Get(resultString[0]);
-        System.out.println(name);
-        //此处应该输出类型
+        result =httpClient.Get(resultString[0]);
 
+        //此处应该输出类型
+        System.out.println(name);
 
         //解析类型，爬取具体的信息
 
+    }
 
-
-
+    public String getResult() {
+        return result;
     }
 }

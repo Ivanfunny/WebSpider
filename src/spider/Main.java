@@ -12,8 +12,8 @@ public class Main {
         String u= "";
         Set<String> links = new HashSet<>();
 
-//        String  ht = httpClient.Get("http://www.cnhnb.com/p/tudou/");
-//        u = htmlParser.nextPage(ht);
+//        String  ht = httpClient.Get("http://www.cnhnb.com/gongying/2320615/");
+//        u = htmlParser.readdata(ht);
 //        System.out.println(u);
 
 

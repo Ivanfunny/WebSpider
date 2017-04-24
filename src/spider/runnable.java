@@ -47,5 +47,8 @@ public class runnable extends Thread{
         produceType p = new produceType();
         p.setLinks(links);
         p.readUrl();
+        produceTypeData data = new produceTypeData();
+        data.setResult(p.getResult());
+        data.readProduceTypeData();
     }
 }

@@ -105,4 +105,46 @@ public class htmlParser {
         }
         return next;
     }
+    public static String readdata(String result){
+        String price = " ";
+        String placeoforigin = " ";
+        String string = " ";
+        try{
+            Parser parser = Parser.createParser(result,ENCODE);
+            NodeFilter tag = new TagNameFilter("div");
+            NodeFilter at = new HasAttributeFilter("class","txt clearfix");
+            NodeFilter and = new AndFilter(tag,at);
+            NodeList nodeList = parser.extractAllNodesThatMatch(and);
+
+//            NodeFilter tag1 = new TagNameFilter("div");
+//            NodeFilter at1 = new HasAttributeFilter("class","price clearfix");
+//            NodeFilter and1 = new AndFilter(tag1,at1);
+//            NodeList nodeList1 = parser.extractAllNodesThatMatch(and1);
+
+
+            if(nodeList!=null){
+                for(int i=0;i<nodeList.size();i++){
+                    Node node = (Node)nodeList.elementAt(i);
+                    placeoforigin = node.toPlainTextString();
+                    if (placeoforigin.contains("发货地")){
+                        string = placeoforigin;
+                    }
+                }
+            }
+
+//            if(nodeList1!=null){
+//                for(int i=0;i<nodeList1.size();i++){
+//                    Node node1 = (Node)nodeList1.elementAt(i);
+//                    price = node1.toPlainTextString();
+//                    if (price.contains("价格")){
+//                        string = string+price;
+//                    }
+//                }
+//            }
+
+        }catch (ParserException e){
+            e.printStackTrace();
+        }
+        return string;
+    }
 }
