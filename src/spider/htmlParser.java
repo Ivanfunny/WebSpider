@@ -98,7 +98,8 @@ public class htmlParser {
                     }
                 }
             }else{
-                System.out.println("没有下一页了！");
+                System.out.println("没有下一页了");
+                return null;
             }
         }catch(ParserException e){
             e.printStackTrace();
