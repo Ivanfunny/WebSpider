@@ -107,6 +107,7 @@ public class htmlParser {
         return next;
     }
     public static String readdata(String result){
+        String type = " ";
         String price = " ";
         String placeoforigin = " ";
         String string = " ";
@@ -117,31 +118,54 @@ public class htmlParser {
             NodeFilter and = new AndFilter(tag,at);
             NodeList nodeList = parser.extractAllNodesThatMatch(and);
 
-//            NodeFilter tag1 = new TagNameFilter("div");
-//            NodeFilter at1 = new HasAttributeFilter("class","price clearfix");
-//            NodeFilter and1 = new AndFilter(tag1,at1);
-//            NodeList nodeList1 = parser.extractAllNodesThatMatch(and1);
-
-
             if(nodeList!=null){
                 for(int i=0;i<nodeList.size();i++){
                     Node node = (Node)nodeList.elementAt(i);
                     placeoforigin = node.toPlainTextString();
                     if (placeoforigin.contains("发货地")){
-                        string = placeoforigin;
+                        placeoforigin = placeoforigin.replaceAll(" ","");
+                        string = placeoforigin.replace("发货地：","");
                     }
                 }
             }
 
-//            if(nodeList1!=null){
-//                for(int i=0;i<nodeList1.size();i++){
-//                    Node node1 = (Node)nodeList1.elementAt(i);
-//                    price = node1.toPlainTextString();
-//                    if (price.contains("价格")){
-//                        string = string+price;
-//                    }
-//                }
-//            }
+            Parser parser1 = Parser.createParser(result,ENCODE);
+            NodeFilter tag1 = new TagNameFilter("div");
+            NodeFilter at1 = new HasAttributeFilter("class","price clearfix");
+            NodeFilter and1 = new AndFilter(tag1,at1);
+            NodeList nodeList1 = parser1.extractAllNodesThatMatch(and1);
+
+
+            if(nodeList1!=null){
+                for(int i=0;i<nodeList1.size();i++){
+                    Node node1 = (Node)nodeList1.elementAt(i);
+                    price = node1.toPlainTextString();
+                    if (price.contains("价格")){
+                        price = price.replaceAll("\t","");
+                        price = price.replaceAll(" ","");
+                        price = price.replace("价格：","");
+                        string = string+"\t"+price;
+                    }
+                }
+            }
+
+            Parser parser2 = Parser.createParser(result,ENCODE);
+            NodeFilter tag2 = new TagNameFilter("span");
+            NodeFilter at2 = new HasAttributeFilter("class","align-1");
+            NodeFilter and2 = new AndFilter(tag2,at2);
+            NodeList nodeList2 = parser2.extractAllNodesThatMatch(and2);
+
+            if(nodeList2!=null){
+                for(int i=0;i<nodeList2.size();i++){
+                    Node node = (Node)nodeList2.elementAt(i);
+                    type = node.toPlainTextString();
+                    if (type.contains("品种")){
+                        type = type.replaceAll(" ","");
+                        type = type.replace("品种：","");
+                        string = type + string;
+                    }
+                }
+            }
 
         }catch (ParserException e){
             e.printStackTrace();

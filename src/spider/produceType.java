@@ -10,7 +10,7 @@ import java.util.regex.Pattern;
  * Created by Administrator on 2017/4/13 0013.
  */
 public class produceType {
-    private Set<String> links = new HashSet<>();
+    private String link = "";
     private String[] resultString = { };
     private String result = "";
 
@@ -18,23 +18,17 @@ public class produceType {
 
     }
 
-    public void setLinks(Set<String> links){
-        this.links = links;
+    public void setLink(String next) {
+        link=next;
     }
 
-    public Set<String> getLinks(){
-        return links;
-    }
+
     public void readUrl(){
-        Iterator<String> url = links.iterator();
-//        while (url.hasNext()){
-//            readType(url.next());
-//            System.out.println(" ");
-//        }
-        if (url.hasNext()){
-            readType(url.next());
-            System.out.println(" ");
-        }
+        readType(link);
+    }
+
+    public String getResult() {
+        return result;
     }
 
     public void readType(String type){
@@ -56,9 +50,5 @@ public class produceType {
 
         //解析类型，爬取具体的信息
 
-    }
-
-    public String getResult() {
-        return result;
     }
 }

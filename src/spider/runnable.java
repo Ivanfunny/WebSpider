@@ -41,14 +41,12 @@ public class runnable extends Thread{
             Iterator<String> htUrl = linksRunnable.iterator();
             while(htUrl.hasNext()){
                 links.add(htUrl.next());
-                //System.out.println(htUrl.next());
             }
         }
-        produceType p = new produceType();
-        p.setLinks(links);
-        p.readUrl();
-        produceTypeData data = new produceTypeData();
-        data.setResult(p.getResult());
-        data.readProduceTypeData();
+
+        Iterator<String> type = links.iterator();
+        for(int i=0;i<5;i++){
+            if(type.hasNext()) new Thread(new thread(type.next())).start();
+        }
     }
 }
