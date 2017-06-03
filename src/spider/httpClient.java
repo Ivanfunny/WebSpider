@@ -32,7 +32,7 @@ public class httpClient {
                 //返回http状态码，判断是否成功
                 if((response != null) && response.getStatusLine().getStatusCode() == HttpStatus.SC_OK){
                     //输出状态行
-                    System.out.println(response.getStatusLine());
+                    //System.out.println(response.getStatusLine());
                     //获取响应实体
                     HttpEntity entity = response.getEntity();
                     //解析实体

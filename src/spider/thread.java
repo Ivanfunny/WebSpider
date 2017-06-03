@@ -1,7 +1,7 @@
 package spider;
 
-import java.util.HashSet;
-import java.util.Set;
+
+import java.io.FileNotFoundException;
 
 /**
  * Created by Administrator on 2017/4/9 0009.
@@ -21,6 +21,10 @@ public class thread extends runnable{
         p.readUrl();
         produceTypeData data = new produceTypeData();
         data.setResult(p.getResult());
-        data.readProduceTypeData();
+        try {
+            data.readProduceTypeData();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
     }
 }

@@ -45,7 +45,7 @@ public class runnable extends Thread{
         }
 
         Iterator<String> type = links.iterator();
-        for(int i=0;i<5;i++){
+        for(int i=0;i<1;i++){
             if(type.hasNext()) new Thread(new thread(type.next())).start();
         }
     }

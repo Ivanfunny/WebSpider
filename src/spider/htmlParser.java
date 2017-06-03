@@ -16,6 +16,7 @@ import java.util.Set;
  */
 public class htmlParser {
     private static String ENCODE = "uTF-8";
+    private static String previous = "";//判断最后一页
     public static Set<String> linksUrl(String szContent){
         Set<String> links = new HashSet<>();
         String linkUrl = "";
@@ -95,11 +96,12 @@ public class htmlParser {
                     }
                     if(a.contains("http://www.cnhnb.com/p/")){
                         next = a;
+                        if(next==previous){
+                            return null;
+                        }
+                        previous = next;//保存上一个链接
                     }
                 }
-            }else{
-                System.out.println("没有下一页了");
-                return null;
             }
         }catch(ParserException e){
             e.printStackTrace();
@@ -125,6 +127,9 @@ public class htmlParser {
                     if (placeoforigin.contains("发货地")){
                         placeoforigin = placeoforigin.replaceAll(" ","");
                         string = placeoforigin.replace("发货地：","");
+                        if(string==" "){
+                            return null;
+                        }
                     }
                 }
             }
@@ -144,7 +149,10 @@ public class htmlParser {
                         price = price.replaceAll("\t","");
                         price = price.replaceAll(" ","");
                         price = price.replace("价格：","");
-                        string = string+"\t"+price;
+                        if (price==" "){
+                            return null;
+                        }
+                        string = string+price;
                     }
                 }
             }
@@ -162,6 +170,9 @@ public class htmlParser {
                     if (type.contains("品种")){
                         type = type.replaceAll(" ","");
                         type = type.replace("品种：","");
+                        if (type==" "){
+                            return null;
+                        }
                         string = type + string;
                     }
                 }
